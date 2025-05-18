@@ -24,6 +24,7 @@ orig/*/*
 # Build files
 build/
 .ninja_*
+build.ninja
 
 # decompctx output
 ctx.*

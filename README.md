@@ -32,6 +32,26 @@ Quick Guides
 - [Decomp Basics](./docs/decomp_basics.md)
 -->
 
+Building the network test
+============
+
+```
+git clone --branch net-test https://github.com/KittyPBoxx/ac-decomp.git
+cd ac-decomp
+git clone --recursive https://github.com/Prakxo/ac-decomp.git
+COPY GAME FILES TO ORIG
+python configure.py
+
+# WARNING! This is expected to fail with 'Failed to find symbol inet_addr in any module'
+ninja 
+
+ninja -f libogc-build.ninja
+
+# 'ninja -f libogc-build.ninja' can be used to rebuild for any other code changes.
+# the .ninja file is the same as the other, without the checksum and with 'build/GAFE01_00/rel0.rsp' replaced with 'libs/libogc_rel0.rsp'
+# libogc_rel0.rsp is the old rsp with all the libogc.o files jammed in there (because the configure.py dosn't seem to like linking to .a files)
+```
+
 Dependencies
 ============
 
