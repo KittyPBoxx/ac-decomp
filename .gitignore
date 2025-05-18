@@ -18,6 +18,9 @@ orig/*/*
 *.map
 *.MAP
 
+!libs/*.rel
+!libs/**/*.o
+
 # Build files
 build/
 .ninja_*
