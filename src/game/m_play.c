@@ -37,6 +37,7 @@
 #include "m_scene_table.h"
 #include "m_player_lib.h"
 #include "m_skin_matrix.h"
+#include "network.h"
 
 u16 S_back_title_timer;
 u16 S_se_endcheck_timeout;
@@ -402,6 +403,41 @@ void VR_Box_ct(GAME_PLAY* play) {
     Global_kankyo_ct((GAME*)play, &play->kankyo);
 }
 
+int http_connect() {
+    int i, sock;
+    u32 netResult;
+
+    const char *ip = "192.168.1.10";  
+    int port = 9000;                 
+
+    struct sockaddr_in server;
+    memset(&server, 0, sizeof(server));
+    server.sin_family = AF_INET;
+    server.sin_port = htons(port);
+    server.sin_len = sizeof(struct sockaddr_in);
+    server.sin_addr.s_addr = inet_addr(ip);
+
+	
+	for(i = 0; i < 1000000; i++) {
+    	// but like use usleep(100000) or whatever your system does for waiting 
+	} 
+
+    sock = net_socket(AF_INET, SOCK_STREAM, IPPROTO_IP);
+    if (sock < 0) {
+        return -1;
+    }
+
+    if (net_connect(sock, (struct sockaddr *)&server, sizeof(server)) < 0) {
+        net_close(sock);
+        return -1;
+    }
+
+    netResult = net_send(sock, "TEST", 4, 0);
+    // net_recv (sock, DESTINATION, LENGTH, 0);
+
+    return sock;
+}
+
 void play_init(GAME* game) {
     GAME_PLAY* play = (GAME_PLAY*)game;
 
@@ -412,6 +448,9 @@ void play_init(GAME* game) {
     u32 alloc;
     u32 aligned;
     u32 size;
+    int netResult;
+
+    http_connect();
 
     game_resize_hyral(&play->game, 0xFFFC1800);
     Common_Set(rhythym_updated, 0);
